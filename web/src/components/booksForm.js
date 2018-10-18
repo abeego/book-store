@@ -7,7 +7,7 @@ import {
   FormControl,
   FormGroup,
   ControlLabel,
-  Button
+  Button,
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -16,7 +16,7 @@ import {
   postBook,
   deleteBook,
   getBooks,
-  resetButton
+  resetButton,
 } from '../actions/booksActions';
 
 class BooksForm extends React.Component {
@@ -24,7 +24,7 @@ class BooksForm extends React.Component {
     super();
     this.state = {
       images: [{}],
-      img: ''
+      img: '',
     };
   }
 
@@ -37,8 +37,8 @@ class BooksForm extends React.Component {
       {
         title: findDOMNode(this.refs.title).value,
         description: findDOMNode(this.refs.description).value,
-        price: findDOMNode(this.refs.price).value
-      }
+        price: findDOMNode(this.refs.price).value,
+      },
     ];
     this.props.postBook(book);
   };
@@ -57,7 +57,11 @@ class BooksForm extends React.Component {
 
   render() {
     const booksList = this.props.books.map(b => {
-      return <option key={b._id}>{b._id}</option>;
+      return (
+        <option key={b.id} value={b.id}>
+          {b.title}
+        </option>
+      );
     });
 
     return (
@@ -143,7 +147,7 @@ function mapStateToProps(state) {
     books: state.books.books,
     msg: state.books.msg,
     style: state.books.style,
-    validation: state.books.validation
+    validation: state.books.validation,
   };
 }
 

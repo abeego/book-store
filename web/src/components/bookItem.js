@@ -8,7 +8,7 @@ class BookItem extends React.Component {
   constructor() {
     super();
     this.state = {
-      isClicked: false
+      isClicked: false,
     };
   }
 
@@ -19,15 +19,15 @@ class BookItem extends React.Component {
   handleCart = () => {
     const book = [...this.props.cart, { ...this.props.book, quantity: 1 }];
     if (this.props.cart.length > 0) {
-      let _id = this.props.book._id;
+      let id = this.props.book.id;
       let cartIndex = this.props.cart.findIndex(c => {
-        return c._id === _id;
+        return c.id === id;
       });
 
       if (cartIndex === -1) {
         this.props.addToCart(book);
       } else {
-        this.props.updateCartItem(_id, 1, this.props.cart);
+        this.props.updateCartItem(id, 1, this.props.cart);
       }
     } else {
       this.props.addToCart(book);
@@ -66,7 +66,7 @@ class BookItem extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    cart: state.cart.cart
+    cart: state.cart.cart,
   };
 }
 
@@ -74,7 +74,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       addToCart,
-      updateCartItem
+      updateCartItem,
     },
     dispatch
   );

@@ -8,20 +8,20 @@ import {
   Well,
   Button,
   ButtonGroup,
-  Label
+  Label,
 } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import {
   deleteCartItem,
   updateCartItem,
-  getCart
+  getCart,
 } from '../actions/cartActions';
 
 class Cart extends React.Component {
   constructor() {
     super();
     this.state = {
-      showModal: false
+      showModal: false,
     };
   }
 
@@ -37,26 +37,26 @@ class Cart extends React.Component {
     this.setState({ showModal: false });
   };
 
-  onDelet = _id => {
+  onDelet = id => {
     const currentBookToDelete = this.props.cart;
     const indexToDelete = currentBookToDelete.findIndex(book => {
-      return book._id === _id;
+      return book.id === id;
     });
 
     let cartAfterDelete = [
       ...currentBookToDelete.slice(0, indexToDelete),
-      ...currentBookToDelete.slice(indexToDelete + 1)
+      ...currentBookToDelete.slice(indexToDelete + 1),
     ];
 
     this.props.deleteCartItem(cartAfterDelete);
   };
 
-  onIncrement = _id => {
-    this.props.updateCartItem(_id, 1, this.props.cart);
+  onIncrement = id => {
+    this.props.updateCartItem(id, 1, this.props.cart);
   };
 
-  onDecrement = (_id, quantity) => {
-    if (quantity > 1) this.props.updateCartItem(_id, -1, this.props.cart);
+  onDecrement = (id, quantity) => {
+    if (quantity > 1) this.props.updateCartItem(id, -1, this.props.cart);
   };
 
   render() {
@@ -74,7 +74,7 @@ class Cart extends React.Component {
   renderCart() {
     const cartItemsList = this.props.cart.map(c => {
       return (
-        <Panel key={c._id}>
+        <Panel key={c.id}>
           <Panel.Body>
             <Row>
               <Col xs={12} sm={4}>
@@ -92,14 +92,14 @@ class Cart extends React.Component {
               <Col xs={6} sm={4}>
                 <ButtonGroup style={{ minWidth: '300px' }}>
                   <Button
-                    onClick={e => this.onDecrement(c._id, c.quantity)}
+                    onClick={e => this.onDecrement(c.id, c.quantity)}
                     bsStyle="default"
                     bsSize="small"
                   >
                     -
                   </Button>
                   <Button
-                    onClick={e => this.onIncrement(c._id)}
+                    onClick={e => this.onIncrement(c.id)}
                     bsStyle="default"
                     bsSize="small"
                   >
@@ -107,7 +107,7 @@ class Cart extends React.Component {
                   </Button>
                   <span> </span>
                   <Button
-                    onClick={e => this.onDelet(c._id)}
+                    onClick={e => this.onDelet(c.id)}
                     bsStyle="danger"
                     bsSize="small"
                   >
@@ -161,7 +161,7 @@ class Cart extends React.Component {
 function mapStateToProps(state) {
   return {
     cart: state.cart.cart,
-    totalAmount: state.cart.totalAmount
+    totalAmount: state.cart.totalAmount,
   };
 }
 
@@ -170,7 +170,7 @@ function mapDispatchToProps(dispatch) {
     {
       deleteCartItem: deleteCartItem,
       updateCartItem: updateCartItem,
-      getCart: getCart
+      getCart: getCart,
     },
     dispatch
   );

@@ -5,10 +5,10 @@ export function getCart() {
     axios
       .get('/api/cart')
       .then(response => {
-        dispatch({type: 'GET_CART', payload: response.data});
+        dispatch({ type: 'GET_CART', payload: response.data });
       })
       .catch(err => {
-        dispatch({type: 'GET_CART_REJECTED', msg: err});
+        dispatch({ type: 'GET_CART_REJECTED', msg: err });
       });
   };
 }
@@ -18,18 +18,18 @@ export function addToCart(book) {
     axios
       .post('/api/cart', book)
       .then(response => {
-        dispatch({type: 'ADD_TO_CART', payload: response.data});
+        dispatch({ type: 'ADD_TO_CART', payload: response.data });
       })
       .catch(err => {
-        dispatch({type: 'ADD_TO_CART_REJECTED', msg: err});
+        dispatch({ type: 'ADD_TO_CART_REJECTED', msg: err });
       });
   };
 }
 
-export function updateCartItem(_id, unit, cart) {
+export function updateCartItem(id, unit, cart) {
   const currentBookToUpdate = cart;
   const indexToUpdate = currentBookToUpdate.findIndex(book => {
-    return book._id === _id;
+    return book.id === id;
   });
   const newBookToUpdate = {
     ...currentBookToUpdate[indexToUpdate],
@@ -45,10 +45,10 @@ export function updateCartItem(_id, unit, cart) {
     axios
       .post('/api/cart', cartUpdate)
       .then(response => {
-        dispatch({type: 'UPDATE_CARD_ITEM', payload: response.data});
+        dispatch({ type: 'UPDATE_CARD_ITEM', payload: response.data });
       })
       .catch(err => {
-        dispatch({type: 'UPDATE_CARD_ITEM_REJECTED', msg: err});
+        dispatch({ type: 'UPDATE_CARD_ITEM_REJECTED', msg: err });
       });
   };
 }
@@ -58,10 +58,10 @@ export function deleteCartItem(cart) {
     axios
       .post('/api/cart', cart)
       .then(response => {
-        dispatch({type: 'DELETE_CART_ITEM', payload: response.data});
+        dispatch({ type: 'DELETE_CART_ITEM', payload: response.data });
       })
       .catch(err => {
-        dispatch({type: 'DELETE_CART_ITEM_REJECTED', msg: err});
+        dispatch({ type: 'DELETE_CART_ITEM_REJECTED', msg: err });
       });
   };
 }

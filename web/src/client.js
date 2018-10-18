@@ -12,7 +12,7 @@ const middlerware = applyMiddleware(thunk, logger);
 const store = createStore(reducers, middlerware);
 
 import BookList from './components/booksList';
-import Cart from './components/cart';
+import CartList from './components/cartList';
 import BooksForm from './components/booksForm';
 import Menu from './components/menu';
 import Footer from './components/footer';
@@ -25,7 +25,7 @@ const Routes = (
         <Switch>
           <Route exact path="/" component={BookList} />
           <Route path="/admin" component={BooksForm} />
-          <Route path="/cart" component={Cart} />
+          <Route path="/cart" component={CartList} />
         </Switch>
         <Footer />
       </div>

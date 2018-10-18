@@ -19,6 +19,8 @@ body {
 
 div.row.second {
   margin: 5%;
+  display: inline-flex;
+  flex-wrap: wrap;
 }
 
 button.link {
