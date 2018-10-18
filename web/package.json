@@ -1,0 +1,38 @@
+{
+  "name": "book-store-web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www & node ../api/api.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "axios": "^0.18.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
+    "babel-preset-stage-1": "^6.24.1",
+    "debug": "~2.6.9",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "http-errors": "~1.6.2",
+    "http-proxy": "^1.17.0",
+    "morgan": "~1.9.0",
+    "react": "^16.5.2",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.5.2",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "webpack": "^4.20.2"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
+    "eslint": "^5.6.1",
+    "eslint-plugin-react": "^7.11.1"
+  }
+}
