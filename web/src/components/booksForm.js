@@ -22,9 +22,14 @@ import {
 class BooksForm extends React.Component {
   constructor() {
     super();
+
     this.state = {
-      images: [{}],
+      books: [],
       img: '',
+      title: '',
+      description: '',
+      price: '',
+      selection: '',
     };
   }
 
@@ -32,37 +37,56 @@ class BooksForm extends React.Component {
     this.props.getBooks();
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.books !== nextProps.books) {
+      return {
+        books: nextProps.books,
+      };
+    }
+    return null;
+  }
+
   handleSubmit = () => {
-    const book = [
-      {
-        title: findDOMNode(this.refs.title).value,
-        description: findDOMNode(this.refs.description).value,
-        price: findDOMNode(this.refs.price).value,
-      },
-    ];
+    const book = {
+      title: this.state.title,
+      description: this.state.description,
+      price: this.state.price,
+    };
     this.props.postBook(book);
   };
 
   onDelete = () => {
-    let bookId = findDOMNode(this.refs.delete).value;
-    this.props.deleteBook(bookId);
+    this.props.deleteBook(this.state.selection);
+    this.setState({ books: [] });
   };
 
   resetForm = () => {
     this.props.resetButton();
-    findDOMNode(this.refs.title).value = '';
-    findDOMNode(this.refs.description).value = '';
-    findDOMNode(this.refs.price).value = '';
+    this.setState({
+      title: '',
+      description: '',
+      price: '',
+    });
   };
 
+  updateTitle = e => this.setState({ title: e.target.value });
+
+  updateDescription = e => this.setState({ description: e.target.value });
+
+  updatePrice = e => this.setState({ price: parseFloat(e.target.value) });
+
+  selectBook = e => this.setState({ selection: e.target.value });
+
   render() {
-    const booksList = this.props.books.map(b => {
+    const booksList = this.state.books.map(b => {
       return (
         <option key={b.id} value={b.id}>
           {b.title}
         </option>
       );
     });
+
+    const { validation } = this.props;
 
     return (
       <Well>
@@ -72,43 +96,68 @@ class BooksForm extends React.Component {
             <Panel>
               <Panel.Body>
                 <FormGroup
-                  controlId="title"
-                  validationState={this.props.validation}
+                  validationState={
+                    validation && validation.title
+                      ? validation.title
+                      : !validation
+                        ? undefined
+                        : 'success'
+                  }
                 >
                   <ControlLabel>Title</ControlLabel>
                   <FormControl
                     type="text"
                     placeholder="Enter Title"
-                    ref="title"
+                    onChange={this.updateTitle}
+                    value={this.state.title}
                   />
                   <FormControl.Feedback />
                 </FormGroup>
                 <FormGroup
-                  controlId="description"
-                  validationState={this.props.validation}
+                  validationState={
+                    validation && validation.description
+                      ? validation.description
+                      : !validation
+                        ? undefined
+                        : 'success'
+                  }
                 >
                   <ControlLabel>Description</ControlLabel>
                   <FormControl
                     type="text"
                     placeholder="Enter Description"
-                    ref="description"
+                    onChange={this.updateDescription}
+                    value={this.state.description}
                   />
                   <FormControl.Feedback />
                 </FormGroup>
                 <FormGroup
-                  controlId="price"
-                  validationState={this.props.validation}
+                  validationState={
+                    validation && validation.price
+                      ? validation.price
+                      : !validation
+                        ? undefined
+                        : 'success'
+                  }
                 >
                   <ControlLabel>Price</ControlLabel>
                   <FormControl
-                    type="text"
+                    type="number"
+                    min="0"
+                    step="0.01"
                     placeholder="Enter Price"
-                    ref="price"
+                    value={this.state.price}
+                    onChange={this.updatePrice}
                   />
                   <FormControl.Feedback />
                 </FormGroup>
                 <Button
-                  onClick={!this.props.msg ? this.handleSubmit : this.resetForm}
+                  onClick={
+                    !this.props.msg ||
+                    (this.props.msg && this.props.validation !== 'success')
+                      ? this.handleSubmit
+                      : this.resetForm
+                  }
                   bsStyle={!this.props.style ? 'primary' : this.props.style}
                 >
                   {!this.props.msg ? 'Save the book' : this.props.msg}
@@ -121,9 +170,9 @@ class BooksForm extends React.Component {
                   <FormGroup controlId="formControlsSelect">
                     <ControlLabel>Select a book</ControlLabel>
                     <FormControl
-                      ref="delete"
                       componentClass="select"
                       placeholder="select"
+                      onChange={this.selectBook}
                     >
                       <option value="select">select</option>
                       {booksList}

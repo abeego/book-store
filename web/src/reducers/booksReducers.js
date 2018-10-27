@@ -11,16 +11,20 @@ export function booksReducer(
       return {
         ...state,
         books: [...state.books, ...action.payload],
-        msg: 'Saved! Click to continue',
+        msg: 'Saved! Click to add another.',
         style: 'success',
         validation: 'success',
       };
     case 'POST_BOOK_REJECTED':
+      const validation = {};
+      action.payload.invalidFields.forEach(field => {
+        validation[field] = 'error';
+      });
+
       return {
         ...state,
-        msg: 'Please, try again',
-        style: 'danger',
-        validation: 'error',
+        msg: action.payload.msg || 'Please, try again',
+        validation,
       };
     case 'RESET_BUTTON':
       return { ...state, msg: null, style: null, validation: null };
@@ -29,7 +33,7 @@ export function booksReducer(
 
       const currentBookToDelete = [...state.books];
       const indexToDelete = currentBookToDelete.findIndex(book => {
-        return book._id == action.payload;
+        return book.id == action.payload;
       });
       return {
         books: [

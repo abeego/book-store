@@ -3,10 +3,10 @@ module.exports = {
     client: 'pg',
     connection: {
       host: '127.0.0.1',
-      user: 'postgres',
-      password: '',
-      database: 'book_store_db',
-      port: 5433,
+      port: 5432,
+      user: '<username>',
+      password: '<password>',
+      database: 'book_store_dev_db',
     },
     migrations: {
       tableName: 'migrations',
@@ -20,10 +20,11 @@ module.exports = {
   test: {
     client: 'pg',
     connection: {
+      host: '<host>',
+      port: 5432,
       database: 'book_store_test_db',
-      user: 'postgres',
-      password: '',
-      port: 5433,
+      user: '<username>',
+      password: '<password>',
     },
     migrations: {
       directory: __dirname + '/migrations',
@@ -36,9 +37,11 @@ module.exports = {
   production: {
     client: 'pg',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
+      host: '<host>',
+      port: '<port>',
+      database: '<database>',
+      user: '<username>',
+      password: '<password>',
     },
     migrations: {
       directory: __dirname + '/migrations',

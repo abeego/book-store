@@ -15,7 +15,34 @@ export function getBooks() {
 
 export function postBook(book) {
   return dispatch => {
-    axios
+    const { title, description, price } = book;
+    const invalidFields = [];
+
+    const validTitle = title
+      && typeof title === 'string'
+      && title.length <= 45;
+    if (!validTitle) invalidFields.push('title'); 
+
+    const validDescription = description
+      && typeof description === 'string'
+      && description.length;
+    if (!validDescription) invalidFields.push('description');
+
+    const validPrice = price
+      && typeof price === 'number'
+      && price > 0;
+    if (!validPrice) invalidFields.push('price');
+
+    const valid = validTitle && validDescription && validPrice;
+
+    if (!valid) {
+      dispatch({type: 'POST_BOOK_REJECTED', 
+        payload: {msg: `Please, fill in ${invalidFields.map(field => field)} field.`, invalidFields }
+      });
+    };
+
+    if (valid) {
+      axios
       .post('/api/books', book)
       .then(response => {
         dispatch({type: 'POST_BOOK', payload: response.data});
@@ -23,6 +50,7 @@ export function postBook(book) {
       .catch(err => {
         dispatch({type: 'POST_BOOK_REJECTED', payload: err});
       });
+    }
   };
 }
 
